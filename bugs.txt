@@ -3,15 +3,69 @@
 # desc
 #
 
-[zookd.c:1612]
-description goes here. for example, the 'buf' variable can be
-overwritten by the 'msg' variable because ...
-
-    <paste offending line(s) of code here>
-
-[http.c:1512]
-another description.
-
-    <paste offending line(s) of code here>
+#[zookd.c:1612]
+#description goes here. for example, the 'buf' variable can be
+#overwritten by the 'msg' variable because ...
+#
+#    <paste offending line(s) of code here>
+#
+#[http.c:1512]
+#another description.
+#
+#    <paste offending line(s) of code here>
 
 # many more come here
+
+### 1
+[zookd.c:70]
+The size of reqpath buffer should be less than 2048 bytes. Sending the request
+path that is longer than 2048 bytes will cause buffer overflow.
+
+static void process_client(int fd)
+    char reqpath[2048];
+    ...
+    if ((errmsg = http_request_line(fd, reqpath, env, &env_len)))
+
+
+### 2
+[http.c:282]
+The pn buffer in http_serve is only 1024 bytes. The name is the REQUEST_URI
+value. If we pass the longer enough URI value, it will cause buffer overflow.
+
+void http_serve(int fd, const char *name)
+    char pn[1024];
+    ...
+    strcat(pn, name);
+
+
+### 3
+[http.c:165]
+The size of envvar is 512, if the header field name size is larger than 512, it could
+cause buffer overflow.
+
+const char *http_request_headers(int fd)
+    ...
+    char envvar[512];
+    ...
+    sprintf(envvar, "HTTP_%s", buf);
+
+
+### 4
+[http.c:159]
+The size of value is 512, if the header field value size is larger than 512, it could
+cause buffer overflow.
+
+const char *http_request_headers(int fd)
+    ...
+    char value[512];
+    ...
+    url_decode(value, sp);
+
+
+### 5
+[http.c:344]
+The dst is the name buffer with size 1024. If the reqpath is larger
+than 1024, it could cause buffer overflow.
+
+void dir_join(char *dst, const char *dirname, const char *filename) {
+    strcpy(dst, dirname);

@@ -1,1 +1,12 @@
 ## Place your answers here.
+
+./exploit-2a.py
+triggers the bug in [zookd.c:70] with the function process_client(int fd).
+The return address is overwritten by overflow of the repath[2048], which is
+expected to store the request URI.
+
+./exploit-2b.py
+trigger the bug in [http.c:165] with the function http_request_headers(int fd).
+The return address is overwritten by overflow the envvar[512] which is expected
+to store the field name in request header.
+
