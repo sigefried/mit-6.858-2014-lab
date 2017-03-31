@@ -1,5 +1,8 @@
 ## Place your answers here.
 
+Ex.2
+=====================
+
 ./exploit-2a.py
 triggers the bug in [zookd.c:70] with the function process_client(int fd).
 The return address is overwritten by overflow of the repath[2048], which is
@@ -9,4 +12,27 @@ expected to store the request URI.
 trigger the bug in [http.c:165] with the function http_request_headers(int fd).
 The return address is overwritten by overflow the envvar[512] which is expected
 to store the field name in request header.
+
+Ex.3
+=====================
+
+I choose to attack the bug in [zookd.c:70] with the function process_client(int fd).
+
+By using the stack overflow, we can construct the stack as follows:
+
+	|------------|
+	| 0xbfffee0c |
+	|------------|
+	| aaaaaaa    | ebp: 0xbffff618
+	|------------|
+	| aaaaaaaa   | (2068 - 4 - length of injectcode)
+	|------------|
+	| injectcode | 0xbfffee08 + 4
+	|------------|
+	|  '\aaa'    | &reqpath: 0xbfffee08
+	|------------|
+
+Ex.4
+=====================
+
 
