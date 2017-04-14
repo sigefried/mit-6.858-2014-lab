@@ -1,1 +1,72 @@
 ## Place your answers here.
+
+Ex.2
+=====================
+
+./exploit-2a.py
+triggers the bug in [zookd.c:70] with the function process_client(int fd).
+The return address is overwritten by overflow of the repath[2048], which is
+expected to store the request URI.
+
+./exploit-2b.py
+trigger the bug in [http.c:165] with the function http_request_headers(int fd).
+The return address is overwritten by overflow the envvar[512] which is expected
+to store the field name in request header.
+
+Ex.3
+=====================
+
+I choose to attack the bug in [zookd.c:70] with the function process_client(int fd).
+
+By using the stack overflow, we can construct the stack as follows:
+
+  0xbffff61c  0xbfffee0c
+  "aaa"
+  "..."
+  0xbfffee0c  "${inject code}"
+  0xbfffee08  reqpath  "/aaa"
+
+
+Ex.4
+=====================
+
+./exploit-4a.py
+triggers the bug in [zookd.c:70] with the function process_client(int fd).
+By using the stack overflow, we can construct the stack as follows:
+
+  0xbffff628  str  "/home/httpd/grades.txt"
+  0xbffff624  stradr  0xbffff628
+  0xbffff620  exit  0x40058150
+  0xbffff61c  unlink 0x40102450
+  "aaa"
+  "..."
+  "aaa"
+  0xbfffee08  reqpath  "/aaa"
+
+./exploit-4b.py
+Because all the cookies will be case to uppercase letter. I cannot the bug I
+found in exploit-2b.py, I try to attack another bug, which is rewrite the pn
+buffer in http.c:276. The idea to reconstruct the stack is just the same as
+exploit-4b.py except that in this time, we need to carefully prepared the
+stack that make sure the handler to be http_serv_none and could successfully
+executed such handler.
+
+Ex.5
+=====================
+1)  http.c:129, there is another buffer overflow bugs. We can attack such bug
+by sending buffer that is longer than  8192 (the buf size). However, all the
+characters in such buffer will be converted to upper case. As a result, It may
+be hard to perform the attack such like in exercise 4.
+
+2)  In the http_serve_directory, it allows the attacker to pass arbitrary 
+
+Ex.6
+=====================
+
+The modification I made:
+1) sprinf --> snprinf
+2) strcat --> strncat
+3) for buffer overflow caused by url_decode, make the dst buffer be static
+variable.
+
+

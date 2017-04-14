@@ -1,4 +1,5 @@
 /*.o
+/.*
 /*.log
 /zookd
 /zookd-exstack
@@ -13,3 +14,5 @@
 /zooksvc
 /run-shellcode
 /submit.key
+cscope.*
+tags
