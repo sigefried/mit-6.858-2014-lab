@@ -71,9 +71,11 @@ python /jail/zoobar/zoodb.py init-person
 python /jail/zoobar/zoodb.py init-transfer
 
 # set perm
-set_perms 61012:61012 755 /jail/zoobar
-set_perms 61012:61012 755 /jail/zoobar/db/person
-set_perms 61012:61012 755 /jail/zoobar/db/transfer
-set_perms 61012:61012 664 /jail/zoobar/db/person/person.db
-set_perms 61012:61012 664 /jail/zoobar/db/transfer/transfer.db
-set_perms 61012:61012 551 /jail/zoobar/index.cgi
+#set_perms 61013:61013 755 /jail/zoobar
+
+set_perms 61012:61012 330 /jail/zoobar/db/person
+set_perms 61012:61012 330 /jail/zoobar/db/transfer
+set_perms 61012:61012 660 /jail/zoobar/db/person/person.db
+set_perms 61012:61012 660 /jail/zoobar/db/transfer/transfer.db
+
+set_perms 61014:61014 555 /jail/zoobar/index.cgi
