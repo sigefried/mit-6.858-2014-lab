@@ -57,7 +57,7 @@ mkdir -p /jail/usr/share/zoneinfo
 cp -r /usr/share/zoneinfo/America /jail/usr/share/zoneinfo/
 
 create_socket_dir /jail/echosvc 61010:61010 755
-create_socket_dir /jail/authavc 61015:61015 755
+create_socket_dir /jail/authsvc 61015:61015 755
 
 mkdir -p /jail/tmp
 chmod a+rwxt /jail/tmp

@@ -2,7 +2,7 @@ from debug import *
 from zoodb import *
 import rpclib
 
-sockname = "/authavc/sock"
+sockname = "/authsvc/sock"
 c = rpclib.client_connect(sockname);
 
 def login(username, password):
