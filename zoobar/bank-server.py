@@ -5,6 +5,7 @@ import sys
 import bank
 from debug import *
 from sqlalchemy.orm import class_mapper
+from pbkdf2 import crypt
 
 def serialize(model):
     """Transforms a model into a dictionary which can be dumped to JSON."""
