@@ -56,10 +56,12 @@ def run_profile(pcode, profile_api_client):
 
 class ProfileServer(rpclib.RpcServer):
     def rpc_run(self, pcode, user, visitor):
-        uid = 0
+        uid = 61017
 
         userdir = '/tmp'
-
+        
+        user = user.replace("/", "")
+        user = user.replace(".", "0")
         (sa, sb) = socket.socketpair(socket.AF_UNIX, socket.SOCK_STREAM, 0)
         pid = os.fork()
         if pid == 0:
@@ -71,10 +73,16 @@ class ProfileServer(rpclib.RpcServer):
                 sys.exit(0)
         sb.close()
         os.waitpid(pid, 0)
+        
+        userdir = os.path.join(userdir, user)
+        if not os.path.exists(userdir):
+            os.mkdir(userdir)
+            os.chmod(userdir, 0330)
 
         sandbox = sandboxlib.Sandbox(userdir, uid, '/profilesvc/lockfile')
         with rpclib.RpcClient(sa) as profile_api_client:
             return sandbox.run(lambda: run_profile(pcode, profile_api_client))
+
 
 (_, dummy_zookld_fd, sockpath) = sys.argv
 
